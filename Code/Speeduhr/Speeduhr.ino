@@ -16,9 +16,6 @@
   #define DEBUG_PRINTF(...)
 #endif
 
-/* altes Kabel und Pad 0, neues Setup 1*/
-#define IRQ_TOUCH_MODE 1
-
 hd44780_I2Cexp lcd;
 Adafruit_MPR121 touch, foot;
 
@@ -27,7 +24,7 @@ Adafruit_MPR121 touch, foot;
 #endif
 
 /* Pins MPR121 */
-const uint8_t TOUCH_PIN   = 0;  /*Achtung altes Pad 1 und neues Pad 0*/
+const uint8_t TOUCH_PIN   = 0;
 const uint8_t FOOT_PIN    = 0;
 /* Pins Arduino */
 const uint8_t PIN_TASTER  = 4;
@@ -229,11 +226,9 @@ void setup() {
 
   /* IRQ initialisieren, Initialen Status lesen und IRQs quittieren */
   attachInterrupt(digitalPinToInterrupt(FOOT_IRQ), IRQ_mpr_foot, FALLING);
-  #if IRQ_TOUCH_MODE
-    attachInterrupt(digitalPinToInterrupt(TOUCH_IRQ), IRQ_mpr_touch, FALLING);
-    currTouch = touch.touched();
-    lastTouch = currTouch;
-  #endif
+  attachInterrupt(digitalPinToInterrupt(TOUCH_IRQ), IRQ_mpr_touch, FALLING);
+  currTouch = touch.touched();
+  lastTouch = currTouch;
 
   if (footInstalled) {
     currFoot = foot.touched();
@@ -269,14 +264,10 @@ void loop() {
   }
 
   /* Inputs lesen */
-  #if IRQ_TOUCH_MODE
-    if (mpr_event_touch) {
-      mpr_event_touch = false;
-      currTouch = touch.touched();
-    }
-  #else
+  if (mpr_event_touch) {
+    mpr_event_touch = false;
     currTouch = touch.touched();
-  #endif
+  }
   
   if (footInstalled && mpr_event_foot) {
     mpr_event_foot = false;
