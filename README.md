@@ -1,5 +1,6 @@
 # timing-speed-climbing
-Zeitmessung für Speedklettern auf mit arduino und mpr121 break-out
+Zeitmessung für Speedklettern auf arduino Basis. Frühstartmessung per Trittpad und Anschlagspad sind mit einem kapazitiven Berührungssensor (MPR121) und Kupferplatten (100x100x1mm) gelöst.
+
 
 ## Teileliste
 - Arduino Nano
